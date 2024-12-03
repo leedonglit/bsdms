@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html style="width: 100%; height: 100%;">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BSDMS - My personal account center</title>
+    <#include "/common/content/base.html">
+    <script src = "/module/base/js/message.js" type="text/javascript"></script>
+    <script src = "/module/base/js/manage.js" type="text/javascript"></script>
+    <script src = "/module/base/js/account.js" type="text/javascript"></script>
+</head>
+<body style="width: 100%; height: 100%;">
+<div class="bg">
+    <!-- header -->
+    <#include "/common/content/top.htm">
+    <!-- header end-->
+    <!-- content -->
+    <div class="content">
+        <!-- left -->
+        <div class="my_left">
+            <dl><dt><img src="/module/base/images/icon_26.png"></dt><dd>${_user_content.userName!}</dd></dl>
+            <h1>Project</h1>
+            <ul>
+                <li>
+                    <a tag="/account/myAcademic">
+                        <span id="icon_1"><img src="/module/base/images/icon_18.png"></span>
+                        <span id="icon_2"><img src="/module/base/images/icon_18hover.png"></span>
+                        <p>My Project</p><b>${project_count!0}</b><i></i>
+                    </a>
+                </li>
+                <li>
+                    <a tag="/account/participated">
+                        <span id="icon_1"><img src="/module/base/images/icon_17.png"></span>
+                        <span id="icon_2"><img src="/module/base/images/icon_17hover.png"></span>
+                        <p>I Participated</p><b>${participated_count!0}</b><i></i>
+                    </a>
+                </li>
+            </ul>
+            <h1>Mutual correlation</h1>
+            <ul>
+                <li>
+                    <a class="show_04" tag="/account/loadAccount">
+                        <span id="icon_1"><img src="/module/base/images/icon_18.png"></span>
+                        <span id="icon_2"><img src="/module/base/images/icon_18hover.png"></span>
+                        <p>Account</p><b></b><i></i>
+                    </a>
+                </li>
+                <li>
+                    <a tag="/account/message">
+                        <span id="icon_1"><img src="/module/base/images/icon_17.png"></span>
+                        <span id="icon_2"><img src="/module/base/images/icon_17hover.png"></span>
+                        <p>Message</p><b>${message_count!0}</b><i></i>
+                    </a>
+                </li>
+                <li>
+                    <a tag="/account/manage">
+                        <span id="icon_1"><img src="/module/base/images/icon_17.png"></span>
+                        <span id="icon_2"><img src="/module/base/images/icon_17hover.png"></span>
+                        <p>User Manage</p><b>${user_count!0}</b><i></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- left end -->
+
+        <!-- right -->
+        <div class="my_right" id="first_content"></div>
+        <div class="my_right" id="second_content" style="display: none"></div>
+        <!-- right end -->
+    </div>
+    <!-- content -->
+</div>
+<script>
+    $(".my_left ul li a").click(function (){
+        $("a.show_04").removeClass("show_04");
+        $(this).addClass("show_04");
+        const path = $(this).attr("tag");
+        $("#first_content").show();
+        $("#second_content").hide();
+        HD.load({
+            url : ctxPath + path ,
+            data:{},
+            obj:$("#first_content"),
+            callBackFunc : function (obj) {
+            }
+        });
+    });
+    if ('${page!}' != '-1'){
+        $(".my_left ul li:eq("+${page!}+") a").click();
+    }else{
+        account.loadAccount();
+    }
+</script>
+</body>
+</html>

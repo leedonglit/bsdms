@@ -1,0 +1,51 @@
+spring:
+  profiles:
+    active: prod
+  cache:
+    ehcache:
+      config: /config/ehcache.xml
+  freemarker:
+    allow-request-override: false
+    cache: true
+    check-template-location: true
+    charset: UTF-8
+    content-type: text/html
+    expose-request-attributes: false
+    expose-session-attributes: false
+    expose-spring-macro-helpers: false
+    suffix: .htm
+    template-loader-path: classpath:templates/
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+server:
+  tomcat:
+    uri-encoding: UTF-8
+    threads:
+      max: 200
+  servlet:
+    encoding:
+      enabled: true
+      force: true
+      charset: UTF-8
+  max-http-header-size: 10MB
+
+async:
+  corePoolSize: 10
+  maxPoolSize: 200
+  queueCapacity: 10
+
+logging:
+  charset:
+    console: UTF-8
+  file:
+    path: ${user.dir}/../logs/tomcat.log
+
+
+kkfileview:
+  ip: 3.91.107.249
+  prot: 8012
+# 本机公网ip
+local:
+  openIp: 3.91.107.249

@@ -1,0 +1,52 @@
+<style>
+    dd p{
+        margin-right: 10px;
+    }
+    .q_l_content{
+        height: 175px;
+        cursor: pointer;
+    }
+</style>
+<input type="hidden" name="count" value="${gpage.params.count!}">
+<#list gpage.result as page>
+    <div class="q_l_content" tag="${page.ACA_ID!}">
+        <dl>
+            <dt>
+                ${page.ACA_TITLE!}
+                <span><b>${page.ACA_CREATE_TIME?string('yyyy')}<i>Years</i></b></span>
+            </dt>
+            <dd>
+                <p>Code:${page.ACA_CODE!}</p>
+                <p>Group:
+                    <#list gpage.params.users as user>
+                        <#if user.user_id == page.ACA_CREATOR>
+                            ${user.user_name!}
+                        </#if>
+                    </#list>
+                </p>
+                <p>Date:${page.ACA_CREATE_TIME!?string('yyyy-MM-dd')}</p>
+                <p>View:${page.ACA_COUNT!}</p>
+            </dd>
+        </dl>
+        <p>${page.ACA_DESC!}</p>
+        <ul>
+            <#list gpage.params.docs as doc>
+                <#if doc.ACA_ID == page.ACA_ID>
+                    <li>${doc.DOC_FILE_NAME!}</li>
+                </#if>
+            </#list>
+        </ul>
+    </div>
+</#list>
+<#if gpage.result?size gt 0>
+    <#import "/common/macro_component/page.ftl" as c1>
+    <@c1.page1 page = gpage objID="search_academic_Form" callback=" search.loadData()" showCount="15"/>
+</#if>
+<script>
+    $("div.q_l_content").click(function (){
+        window.location.href = "/search/detail?id="+$(this).attr("tag");
+    });
+    $(function (){
+        $("#count").text($("input[name='count']").val()+" results from the BSDMS for:")
+    })
+</script>

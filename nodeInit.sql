@@ -1,0 +1,26 @@
+DROP TABLE IF EXISTS `cas_bmdms_document_tab`;
+CREATE TABLE `cas_bmdms_document_tab` (
+  `DOC_ID` varchar(40) NOT NULL,
+  `DOC_TITLE` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '文档标题',
+  `DOC_FROM` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '文档来源',
+  `DOC_TYPE` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '文档类型（后缀）',
+  `DOC_UPLOAD_TIME` datetime DEFAULT NULL COMMENT '上传时间',
+  `DOC_SIZE` varchar(20) DEFAULT NULL COMMENT '大小(kb)',
+  `DOC_DESC` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT '描述',
+  `DOC_STATUS` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '状态0正常1删除2更新',
+  `DOC_VERSION` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '文档版本',
+  `DOC_USER` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '文档上传者',
+  `DOC_FILE_NAME` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '文档实际名称',
+  `DOC_FILE_PATH` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '文档存储路径',
+  `DOC_FILE_REALNAME` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '文档存储名',
+  `DOC_ORIGINAL` varchar(255) DEFAULT NULL COMMENT '文档引用来源',
+  `DOC_CONTENT` longtext,
+  `Kinds` varchar(20) DEFAULT NULL,
+  `Acquired` varchar(20) DEFAULT NULL,
+  `AMethods` varchar(20) DEFAULT NULL,
+  `ALocation` varchar(20) DEFAULT NULL,
+  `SLocation` varchar(20) DEFAULT NULL,
+  `ACA_ID` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `DATA_HASH` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  PRIMARY KEY (`DOC_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

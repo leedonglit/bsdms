@@ -1,0 +1,55 @@
+<table border="0" cellspacing="0" cellpadding="0" class="tab" id="academic-table-demo">
+    <tbody>
+    <tr class="tab_title">
+        <th><input type="checkbox" class="checkbox3"></th>
+        <th>NO</th>
+        <th>Project Code</th>
+        <th>Project Name</th>
+        <th>Create Time</th>
+        <th>Desc</th>
+<!--
+        <th>Status</th>
+-->
+        <th>Operate</th>
+    </tr>
+    <#list gpage.result as page>
+        <tr <#if page_index%2 == 0>class="tab_c2"<#else>class="tab_c1"</#if>>
+            <td><input type="checkbox" class="checkbox3"></td>
+            <td>${page_index+1}</td>
+            <td title="${page.ACA_CODE!}">
+                ${page.ACA_CODE!}
+            </td>
+            <td title="${page.ACA_TITLE!}">
+                <#if page.ACA_TITLE?? && page.ACA_TITLE?length gt 20>
+                    ${page.ACA_TITLE!?substring(0,19)}...
+                    <#else>
+                    ${page.ACA_TITLE!}
+                </#if>
+            </td>
+            <td>${page.ACA_CREATE_TIME!?string('yyyy-MM-dd')}</td>
+            <td>
+                <#if page.ACA_DESC?? && page.ACA_DESC?length gt 20>
+                    ${page.ACA_DESC!?substring(0,19)}...
+                    <#else>
+                    ${page.ACA_DESC!}
+                </#if>
+            </td>
+            <!--<td>
+                <#if page.ACA_STATUS! == '0'>
+                    New
+                    <#elseif page.ACA_STATUS! == '1'>
+                    研发中
+                    <#else>
+                    已完成
+                </#if>
+            </td>-->
+            <td>
+                <a href="/academic/content?acaId=${page.ACA_ID!}" style="color: #2D64B3">Open</a>
+            </td>
+        </tr>
+    </#list>
+    </tbody>
+</table>
+<div class="page" id="academic_table"></div>
+<#import "/common/macro_component/page.ftl" as c1>
+<@c1.page1 page = gpage objID="search_academic_Form" callback="academic.loadData()" showCount="15"/>

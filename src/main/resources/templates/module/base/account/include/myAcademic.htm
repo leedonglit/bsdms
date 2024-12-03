@@ -1,0 +1,46 @@
+<!-- 右上内容 -->
+<div class="my_top">
+    <form id="search_academic_Form" onsubmit="return false">
+        <span class="form_list"><p>Project Title:</p><input type="text" placeholder="Project Title" class="form_text1" id="ACA_TITLE" name="ACA_TITLE" op="like" value=""></span>
+        <span class="form_list"><p>Project Code:</p><input type="text" placeholder="Project Code" class="form_text1" id="ACA_CODE" name="ACA_CODE" op="like" value=""></span>
+        <span class="form_list" style="margin-right: unset;">
+            <p>Time:</p>
+            <input id="startTime" type="text" class="form_text1" style="width: 150px;" placeholder="startTime" id="ACA_START_TIME" name="ACA_START_TIME" op=">=" value="">
+            <p>-</p>
+            <input id="endTime" type="text" class="form_text1" style="width: 150px;" placeholder="endTime" id="ACA_END_TIME" name="ACA_END_TIME" op="<=" value="">
+         </span>
+    </form>
+    <a class="but_01" style="float: right; margin-top:5px;" onclick="academic.loadData()">Search</a>
+</div>
+<!-- 右上内容 end-->
+
+<!-- 右下内容 -->
+<div class="my_bottom">
+    <div class="f_t_but">
+        <ul>
+            <li><a class="but_01 but_02" href="/academic/toAdd"><i style="margin-left: 25px;"><img src="/module/base/images/icon_27.png"></i><b>Create</b></a></li>
+            <li style="cursor: pointer;" onclick="academic.deleteBatch();"><a class="but_01 but_02"><i><img src="/module/base/images/icon_29.png"></i><b>Delete</b></a></li>
+        </ul>
+    </div>
+    <div class="tab_box" id="academic_content"></div>
+</div>
+<!-- 右下内容 end-->
+<script>
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+
+        //执行一个laydate实例
+        laydate.render({
+            type: 'datetime',
+            elem: '#startTime'//指定元素
+        });
+
+        laydate.render({
+            type: 'datetime',
+            elem: '#endTime'//指定元素
+        });
+    });
+    $(document).ready(function (){
+        academic.loadData();
+    });
+</script>

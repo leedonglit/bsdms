@@ -1,0 +1,15 @@
+<script type="text/javascript">
+	var ctxPath="${ctxPath}";
+	var imagePath="${ctxPath}/base/images";
+	var server = "192.168.1.29:4321";
+	var satellite_mapServer="http://"+server+"/satellite/{z}/{x}/{y}.jpg";
+	var overlay_mapServer="http://"+server+"/overlay/{z}/{x}/{y}.png";
+	var basemap_mapServer="http://"+server+"/basemap_0-10/{z}/{y}/{x}.png";
+	var mapServer = satellite_mapServer;
+</script>
+<#assign url="http://192.168.1.29:4321">
+<script type="text/javascript" src="${url}/map/js/jquery-1.8.3.js"></script>
+<script type="text/javascript" src="${url}/map/js/easy.map2d.js"></script>
+<link rel="stylesheet" href="${url}/map/V5.3.0/css/Map.css" type="text/css">
+<link rel="stylesheet" href="${url}/map/V5.3.0/css/ol.css" type="text/css">
+<script type="text/javascript" src="${url}/map/V5.3.0/build/ol.js"></script>

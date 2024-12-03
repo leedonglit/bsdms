@@ -1,0 +1,46 @@
+server:
+  port: 2608
+  servlet:
+    encoding:
+      charset: utf-8
+      force: true
+    session:
+      cookie:
+        name: sessionId
+      timeout: 0
+  error:
+    path: /templates/module/bms/error/error.htm
+  tomcat:
+    basedir: logs/tomcat
+#-----------------------------------------------
+spring:
+  main:
+    allow-circular-references: true
+    banner-mode: console
+  banner:
+    charset: UTF-8
+    location: classpath:/public/startup/1002.txt
+  web:
+    resources:
+      static-locations: classpath:/public/,classpath:/static/,file:E:\dev\map
+##############数据库配置部分###############################
+#主数据源名称为 datasource ；不允许更改
+datasource:
+  main:
+    dbname: datasource
+jdbc:
+  type: mysql
+  url: jdbc:mysql://119.189.0.152:3306/academic?useUnicode=true&useSSL=true&characterEncoding=UTF-8&serverTimezone=GMT%2b8
+  username: root
+  password: ldonglit1q!
+  driver: com.mysql.cj.jdbc.Driver
+
+#部署环境配置
+academic:
+  local:
+    ktrPath: D:\tools\ideaIU-2022.2.3\IntelliJ IDEA 2022.2.3\workspace\shyhproject\academic
+    baseUrl: http://localhost:2608
+    upload:
+      path: D:\tools\ideaIU-2022.2.3\IntelliJ IDEA 2022.2.3\workspace\Academic\upload
+    download:
+      path: D:\tools\ideaIU-2022.2.3\IntelliJ IDEA 2022.2.3\workspace\Academic\download

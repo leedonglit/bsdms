@@ -1,0 +1,43 @@
+<script src="/module/base/js/participated.js" type="text/javascript"></script>
+<!-- 右上内容 -->
+<div class="my_top">
+    <form id="search_participated_Form">
+    <span class="form_list"><p>Project Title:</p><input value="" placeholder="Project Title" type="text" class="form_text1" name="ACA_TITLE" op="like"></span>
+    <span class="form_list"><p>Project Code:</p><input value="" placeholder="Project Code" type="text" class="form_text1" name="ACA_CODE" op="like"></span>
+    <span class="form_list" style="margin-right: unset;">
+        <p>Time:</p>
+        <input value="" id="parStart" type="text" class="form_text1" style="width: 150px;" placeholder="startTime" name="ACA_START_TIME" op=">=">
+        <p>-</p>
+        <input value="" id="parEnd" type="text" class="form_text1" style="width: 150px;" placeholder="endTime" name="ACA_END_TIME" op="<=">
+    </span>
+    <a onclick="participated.loadData();" class="but_01" style="float: right; margin-top:5px;">Search</a>
+    </form>
+</div>
+<!-- 右上内容 end-->
+
+<!-- 右下内容 -->
+<div class="my_bottom">
+    <div class="tab_box" id="participated_content" style="height: calc(100% - 70px);">
+    </div>
+</div>
+<!-- 右下内容 end-->
+<script>
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+
+        //执行一个laydate实例
+        laydate.render({
+            type: 'datetime',
+            elem: '#parStart'//指定元素
+        });
+
+        laydate.render({
+            type: 'datetime',
+            elem: '#parEnd'//指定元素
+        });
+    });
+    $(function(){
+        participated.loadData();
+    })
+</script>
+					

@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html style="width: 100%; height: 100%;">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BSDMS - Project Content</title>
+    <#include "/common/content/base.html">
+    <link href="/webuploader/webuploader.css" type="text/css" rel="stylesheet"/>
+    <script src="/webuploader/webuploader.js"></script>
+    <script src="/plugins/echarts/echarts.js"></script>
+    <script src="/jquery/jquery.tablesort.js"></script>
+    <link href="/module/base/css/logLine2.css" type="text/css" rel="stylesheet"/>
+    <style>
+        ::-webkit-scrollbar {
+            display: none;
+        }
+        th:hover,
+        th.sorted {
+            background: #d4d4d4;
+        }
+
+        th.no-sort,
+        th.no-sort:hover {
+            cursor: not-allowed;
+        }
+
+        th.sorted.ascending:after {
+            content: " \2191";
+        }
+
+        th.sorted.descending:after {
+            content: " \2193";
+        }
+
+        .disabled {
+            opacity: 0.5;
+        }
+
+        .log_desc{
+            white-space: normal;
+            width: 100%;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body style="width: 100%; height: 100%;">
+<input type="hidden" value="${academic.ACA_ID!}" name="ACA_ID">
+<input type="hidden" value="${key!}" name="ACA_KEY">
+<div class="bg">
+    <!-- header -->
+    <#include "/common/content/top.htm">
+    <!-- header end-->
+    <!-- content -->
+    <div class="content">
+        <div class="academic_top">
+            <ul>
+                <li>
+                    <i class="l_t"></i><i class="l_b"></i><i class="r_t"></i><i class="r_b"></i>
+                    <p> Project Title:</p><b>${academic.ACA_TITLE!}</b>
+                </li>
+                <li>
+                    <i class="l_t"></i><i class="l_b"></i><i class="r_t"></i><i class="r_b"></i>
+                    <p> Create Time:</p><b>${academic.ACA_CREATE_TIME!?string('yyyy-MM-dd')}</b>
+                </li>
+                <li>
+                    <i class="l_t"></i><i class="l_b"></i><i class="r_t"></i><i class="r_b"></i>
+                    <p> Creator:</p><b>${academic.ACA_CREATOR!}</b>
+                </li>
+                <li>
+                    <i class="l_t"></i><i class="l_b"></i><i class="r_t"></i><i class="r_b"></i>
+                    <p> Status:</p>
+                    <b>
+                        <#if academic.ACA_STATUS == '0'>
+                            New Project
+                        <#elseif academic.ACA_STATUS == '1'>
+                            In Developmen
+                        <#elseif academic.ACA_STATUS == '2'>
+                            Under Review
+                        <#elseif academic.ACA_STATUS == '3'>
+                            Completed
+                        <#else>
+                            Terminated
+                        </#if>
+                    </b>
+                </li>
+                <li style="max-width: 240px;">
+                    <i class="l_t"></i><i class="l_b"></i><i class="r_t"></i><i class="r_b"></i>
+                    <p> Plan Start Time:</p><b>${academic.ACA_START_TIME!?string('yyyy-MM-dd')}</b>
+                </li>
+            </ul>
+            <span>
+                <#if role != -1><a class="show_03" onclick="academic.openUpload()">Upload</a></#if>
+                <a onclick="academic.openHistory()">History</a>
+                <a onclick="academic.openDown()" style="line-height: 21px">Multi-select download</a>
+            </span>
+        </div>
+
+        <!-- 内容 -->
+        <div class="academic_content">
+            <div class="academic_left" id="academic_tree"></div>
+            <div class="academic_right">
+                <div class="tab_box" style="height: 100%">
+                    <div style="display: none; width: calc(100% - 20px); margin: 10px; line-height: 40px; color: #fff9ec;background: red;border-radius: 10px;height: 40px;font-size: 15px;text-align: center">Threat alarm: The blockchain node data of this project is abnormal and there is a possibility of being attacked or modified. It has been automatically disconnected.</div>
+                    <table border="0" cellspacing="0" cellpadding="0" class="tab academic_table">
+                        <thead>
+                        <tr class="tab_title">
+                            <th style="width: 40px" class="no-sort"><input type="checkbox" class="checkbox3" onclick="academic.selectAll(this)"></th>
+                            <th style="width: 60px" class="number_sort">NO</th>
+                            <th>File Name</th>
+                            <th style="width: 70px">Version</th>
+                            <th style="width: 70px">Type</th>
+                            <th style="width: 110px">Uploader</th>
+                            <th style="width: 150px">Time</th>
+                            <th style="width: 110px">Size</th>
+                            <th style="width: 110px" class="no-sort">Hash</th>
+                            <th style="width: 130px" class="no-sort">Operate</th>
+                        </tr>
+                        </thead>
+                        <tbody id="docToby">
+                        <#if documents?? && documents?size gt 0>
+                            <#list documents as document>
+                                <tr <#if document_index%2 == 0>class="tab_c2"<#else>class="tab_c1"</#if>>
+                                    <td style="width: 40px"><input type="checkbox" class="checkbox3" value="${document.DOC_ID!}"></td>
+                                    <td>${document_index+1}</td>
+                                    <td title="${document.DOC_TITLE!}" style="cursor: pointer;text-align: left">
+                                        <b style="color: #082b6a" onclick="academic.reviewFile('${document.DOC_ID!}','${document.DOC_FILE_REALNAME!}','${kkfileurl!}','${serverurl!}','${watermarkTxt!}')">
+                                            <#if document.DOC_TITLE?? && document.DOC_TITLE?length gt 30>
+                                                ${document.DOC_TITLE!?substring(0,29)}...
+                                            <#else>
+                                                ${document.DOC_TITLE!}
+                                            </#if>
+                                        </b>
+                                        <img id="alarm_${document.DOC_ID!}" tag="normal" class="err_alarm" width="20" src="/module/base/images/err_alarm.png" style="display: none; position: relative;top: -15px;"/>
+                                    </td>
+                                    <td>v${document.DOC_VERSION!}</td>
+                                    <td>${document.DOC_TYPE!}</td>
+                                    <td>${document.DOC_USER!}</td>
+                                    <td>${document.DOC_UPLOAD_TIME!?substring(0,19)}</td>
+                                    <td>${document.DOC_SIZE!}</td>
+                                    <td title="${document.DATA_HASH!}" onclick="copyToClipboard('${document.DATA_HASH!}')">
+                                        ${document.DATA_HASH!?substring(0,10)}...
+                                    </td>
+                                    <td><a style="color: #2003bf" onclick="academic.reviewFile('${document.DOC_ID!}','${document.DOC_FILE_REALNAME!}','${kkfileurl!}','${serverurl!}','${watermarkTxt!}')">View</a>|<a style="color: #2003bf" onclick="academic.openDown('${document.DOC_ID!}')">Download</a></td>
+                                </tr>
+                            </#list>
+                        <#else>
+                            <tr class="tab_c1">
+                                <td colspan="10">None</td>
+                            </tr>
+                        </#if>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <!-- 内容 end-->
+
+        <#--<div class="time">
+            <span class="yuan1"></span>
+            <div class="time_content">
+                <#list logs as log>
+                    <dl class="time_list">
+                        <dt><p>${log.LOG_TIME!?string('yyyy-MM-dd')}</p></dt>
+                        <dd>
+                            <h3>${log.LOG_TITLE!}</h3><b class="yuan"></b>
+                            <span class="time_box" title="${log.LOG_DESC!}">
+                                ${log.LOG_DESC!}
+                            </span>
+                        </dd>
+                    </dl>
+                </#list>
+            </div>
+        </div>-->
+    </div>
+    <!-- content -->
+</div>
+<div class="info_toggle_btn" tag = "hide" style="position: absolute;left: 0px;top: calc(50% - 50px);width: 50px;height: 50px;background: #7e051c;line-height: 47px;color: #fff;font-weight: bold;text-align: center;border-radius: 30px;cursor: pointer;border: #eee solid 1px;">Info</div>
+<div class="my_left info_content" style="position: absolute;left: 0px;top: 74px;height: calc(93% - 40px);display: none;background: #fff;border: 1px solid #ccc;">
+    <div style="width: 100%;height: 100%;/*background: url(/module/base/images/bg_14.png) no-repeat*/;background-size: 100% 100%;">
+        <dl><dt></dt><dd>Project Info</dd></dl>
+        <h1>Group<#if role == 1 || role == 2><img class="btn_add_group" style="width: 29px;right: 45px;position:absolute;" src="/module/base/images/add_user.png"></#if></h1>
+        <ul style="height: 600px;overflow-y: scroll">
+            <#list groups as group>
+                <li tag="${group.GP_ID!}">
+                    <a>
+                        <#if group.GP_ROLE == 1 || group.GP_ROLE == 2>
+                            <span id="icon_1"><img src="/module/base/images/manage.png" style="width: 22px;"></span>
+                            <span id="icon_2"><img src="/module/base/images/manage.png" style="width: 22px;"></span>
+                        <#else>
+                            <span id="icon_1"><img src="/module/base/images/user.png" style="width: 22px;"></span>
+                            <span id="icon_2"><img src="/module/base/images/user.png" style="width: 22px;"></span>
+                        </#if>
+                        <p>${group.GP_USER!}</p>
+                        <#if role == 1 || role == 2>
+                            <b>
+                                <img title="remove" onclick="academic.removeGroup('${group.GP_ID!}')" src="/module/base/images/rm_user.png" style="width: 22px;">
+                                <img title="Become an manager" onclick="academic.beManager('${group.GP_ID!}')" src="/module/base/images/bm_user.png" style="width: 19px;">
+                            </b>
+                        </#if>
+                    </a>
+                </li>
+            </#list>
+        </ul>
+        <#if isUpgrade?? && isUpgrade == '1'>
+            <ul>
+                <li><p style="color: #2D64B3;font-size: 16px" id="uptoGrade">Upgrade to Node User >></p></li>
+            </ul>
+        </#if>
+    </div>
+</div>
+
+<!--log start-->
+<div class="log_toggle_btn" tag="hide" style="position: absolute;right: 0px;top: calc(50% - 50px);width: 50px;height: 50px;background: #7e051c;line-height: 47px;color: #fff;font-weight: bold;text-align: center;border-radius: 30px;cursor: pointer;border: #eee solid 1px;">Log</div>
+<div class="my_left log_content" style="position: absolute;right: 0px;top: 74px;height: calc(93% - 40px);display: none;background: #fff;border: 1px solid #ccc;width: 730px;">
+    <div style="width: 100%;height: 100%;background-size: 100% 100%;">
+        <dl style="width: 100%;margin: 4px 0 10px 0"><dd style="width: 100%;text-align: center;line-height: 90px">Project Document Log</dd></dl>
+        <div id="timeline" style="height: 85%;">
+            <div class="content timeline-item" style="height: 100%;overflow: auto;">
+                <#list logs as log>
+                    <div class="project_dynamics timeline-content">
+                        <div class="dynamics_list">
+                            <span>${log.LOG_TIME!?string('yyyy-MM-dd HH:mm:ss')}</span>
+                            <dl>
+                                <dt><img src="/module/base/images/log/icon_10.png"></dt>
+                                <dd style="cursor:pointer;">
+                                    <h1><img style="margin-right: 5px;" src="/module/base/images/log/icon_11.png">${log.LOG_TITLE!}</h1>
+                                    <div class="log_desc" style="display: none;">${log.LOG_DESC!}</div>
+                                    <i></i>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </#list>
+            </div>
+<!--            <#list logs as log>-->
+<!--                <div class="timeline-item" style="cursor: pointer;">-->
+<!--                <div class="timeline-icon">-->
+<!--                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"-->
+<!--                     width="21px" height="20px" viewBox="0 0 21 20" enable-background="new 0 0 21 20" xml:space="preserve">-->
+<!--                    <g>-->
+<!--                        <path fill="#FFFFFF" d="M17.92,3.065l-1.669-2.302c-0.336-0.464-0.87-0.75-1.479-0.755C14.732,0.008,7.653,0,7.653,0v5.6-->
+<!--                            c0,0.096-0.047,0.185-0.127,0.237c-0.081,0.052-0.181,0.06-0.268,0.02l-1.413-0.64C5.773,5.183,5.69,5.183,5.617,5.215l-1.489,0.65-->
+<!--                            c-0.087,0.038-0.19,0.029-0.271-0.023c-0.079-0.052-0.13-0.141-0.13-0.235V0H2.191C1.655,0,1.233,0.434,1.233,0.97-->
+<!--                            c0,0,0.025,15.952,0.031,15.993c0.084,0.509,0.379,0.962,0.811,1.242l2.334,1.528C4.671,19.905,4.974,20,5.286,20h10.307-->
+<!--                            c1.452,0,2.634-1.189,2.634-2.64V4.007C18.227,3.666,18.12,3.339,17.92,3.065z M16.42,17.36c0,0.464-0.361,0.833-0.827,0.833H5.341-->
+<!--                            l-1.675-1.089h10.341c0.537,0,0.953-0.44,0.953-0.979V2.039l1.459,2.027V17.36L16.42,17.36z"/>-->
+<!--                    </g>-->
+<!--                    </svg>-->
+<!--                </div>-->
+<!--                <div class="timeline-content <#if log_index % 2 == 0>right</#if> ">-->
+<!--                    <h2>${log.LOG_TITLE!}&nbsp;${log.LOG_TIME!?string('yyyy-MM-dd')}</h2>-->
+<!--                    <div class="log_desc" style="display: none;">${log.LOG_DESC!}</div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            </#list>-->
+        </div>
+        </ul>
+    </div>
+</div>
+<!-- log end-->
+
+<div class="link_add_group" style="display: none">
+    <div class="history_box">
+        <div class="history_title">Add Group<a class="close" onclick="ui.closeWin()"></a></div>
+        <div class="history_content">
+            <!-- left -->
+            <div class="content_left" style="width: 100%">
+                <div class="history_t" style="height: 316px">
+                    <span style="background-size: 100% 100%;width: 100%"><p>Link validity period:</p><p><b>1</b> Hour</p><a onclick="academic.getAddGroupUrl(3600)">Create</a></span>
+                    <span style="background-size: 100% 100%;width: 100%"><p>Link validity period:</p><p><b>5</b> Hours</p><a onclick="academic.getAddGroupUrl(18000)">Create</a></span>
+                    <span style="background-size: 100% 100%;width: 100%"><p>Link validity period:</p><p><b>8</b> Hours</p><a onclick="academic.getAddGroupUrl(28800)">Create</a></span>
+                    <span style="background-size: 100% 100%;width: 100%"><p>Link validity period:</p><p><b>1</b> Day</p><a onclick="academic.getAddGroupUrl(86400)">Create</a></span>
+                    <span style="background-size: 100% 100%;width: 100%"><p>Link validity period:</p><p><b>2</b> Days</p><a onclick="academic.getAddGroupUrl(172800)">Create</a></span>
+                    <span style="background-size: 100% 100%;width: 100%"><p>Link validity period:</p><p><b>3</b> Days</p><a onclick="academic.getAddGroupUrl(259200)">Create</a></span>
+                </div>
+                <div class="history_b" style="height: 190px">
+                    <br/>
+                    <p>Add Group Url: <b name = "add_group_url" style="word-break: break-all;font-size: 14px;"></b></p>
+                    <br/>
+                    <p><img onclick=copyToClipboard($("b[name='add_group_url']").html()) title="Copy link" src="/module/base/images/copy.png"></p>
+                </div>
+            </div>
+            <!-- left end-->
+        </div>
+    </div>
+
+</div>
+
+<script>
+    $(function() {
+
+        $('table').tablesort().data('tablesort');
+
+        $('thead th.number_sort').data('sortBy', function(th, td, sorter) {
+            return parseInt(td.text(), 10);
+        });
+    });
+
+    let falsify = ${falsify};
+    if (falsify.length > 0){
+        $(".tab_box div:eq(0)").show();
+        for (let i = 0; i < falsify.length; i++) {
+            let acas = falsify[i].DB_REMARK;
+            acas = acas.split(",");
+            for (let j = 0; j < acas.length; j++) {
+                $("#alarm_"+acas[j]).attr("tag","abnormal");
+                $("#alarm_"+acas[j]).mouseover(function (){
+                    ui.tips(this,"The file modification of block node user <span style='color: #2D64B3;font-weight: bold'>"+falsify[i].USER_ID+"</span> is abnormal, and the node has been automatically disconnected.",2);
+                });
+            }
+        }
+    }
+
+    $(".timeline-item .timeline-content").each(function(n,m){
+        $(m).hover(
+            function(){
+                $(m).find(".log_desc").show(200);
+            },
+            function(){
+                $(m).find(".log_desc").hide(200);
+            }
+        );
+    })
+
+    if (${role} == -1) {
+        if ('${haveEsign!}' == '0') {
+            $(".bg").hide();
+            eSignConfig = {
+                data: "key=${key!}",
+                url: ctxPath + "/academic/viewByKey",
+                callBackFunc: function () {
+                    ui.msg("Save Success！")
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 1000);
+                },
+                callBackErrorFunc: function () {
+                    ui.closeWin();
+                    ui.msg("Save Failed!");
+                }
+            };
+            academic.openEsign();
+        }
+    }
+
+    $(".info_toggle_btn").click(function (){
+        const tag = $(this).attr("tag");
+        if(tag == 'hide'){
+            $(".info_content").fadeIn();
+            $(this).attr("tag","show");
+            $(this).css("left","337px");
+        }else{
+            $(".info_content").fadeOut();
+            $(this).attr("tag","hide");
+            $(this).css("left","0px");
+        }
+    });
+
+    $(".log_toggle_btn").click(function (){
+        const tag = $(this).attr("tag");
+        if(tag == 'hide'){
+            $(".log_content").fadeIn();
+            $(this).attr("tag","show");
+            $(this).css("right","730px");
+        }else{
+            $(".log_content").fadeOut();
+            $(this).attr("tag","hide");
+            $(this).css("right","0px");
+        }
+    });
+    $(".btn_add_group").click(function (){
+        academic.getAddGroupUrl(3600);
+        layer.open({
+            type: 1,
+            title: false,
+            fix: false, //不固定
+            maxmin: false,
+            area: ["960px", '584px'],
+            content: $(".link_add_group").html() ,
+        });
+    });
+
+
+    // 每1000毫秒（1秒）执行一次闪烁动画
+    setInterval(function() {
+        $(".err_alarm[tag='abnormal']").fadeOut(300).fadeIn(300); // 渐隐和渐显效果
+    }, 600); // 设置动画间隔为1秒
+
+
+    function copyToClipboard(text) {
+        const $temp = $("<textarea>");
+        $("body").append($temp);
+        $temp.val(text).select();
+        document.execCommand("copy");
+        $temp.remove();
+        ui.msg("Copy Success!")
+    }
+
+    var chartDom = document.getElementById('academic_tree');
+    var myChart = echarts.init(chartDom);
+    myChart.showLoading();
+
+    const data =JSON.parse('${data!}');
+    myChart.hideLoading();
+    const option = {
+        tooltip: {
+            trigger: 'item',
+            triggerOn: 'mousemove',
+            formatter:function (params) {
+                // params 是一个包含当前树节点数据的对象
+                let res = '文档名称: ' + params.data.name;
+                res += '<br/>上传者: ' + params.data.properties.user;
+                res += '<br/>上传时间: ' + params.data.properties.date;
+                res += '<br/>HASH: ' + (params.data.properties.hash).substring(0, 25) + "...";
+                return res;
+            }
+        },
+        animationDurationUpdate: 1500,
+        animationEasingUpdate: 'quinticInOut',
+        series: [
+            {
+                type: 'graph',
+                symbolSize: 40,
+                roam: true,
+                draggable: true,
+                layout: 'force',
+                label: {
+                    show: true,
+                    position: 'right',
+                    textStyle : {
+                        fontSize:"18px"
+                    }
+                },
+                force: {
+                    edgeLength: 5,
+                    repulsion: 1000,
+                    gravity: 0.2
+                },
+                edgeSymbol: ['circle', 'arrow'],
+                edgeSymbolSize: [4, 10],
+                edgeLabel: {
+                    fontSize: 20
+                },
+                data: data.nodes,
+                links: data.links,
+                lineStyle: {
+                    opacity: 0.9,
+                    width: 2,
+                    curveness: 0
+                },
+                emphasis: {
+                    focus: 'adjacency',
+                    lineStyle: {
+                        width: 10
+                    }
+                }
+            }
+        ]
+    };
+    myChart.setOption(option);
+
+    //升级为节点用户
+    $("#uptoGrade").click(function(){
+        let config = {
+            width:960,
+            height:584,
+            title:false,
+            url:ctxPath + '/academic/uptoGradePage',
+        };
+        ui.createWind(config);
+    })
+</script>
+</body>
+</html>

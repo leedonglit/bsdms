@@ -1,0 +1,44 @@
+<style>
+    .layui-layer{
+        background: #fff0;
+    }
+</style>
+<div class="history_box">
+    <form action="/academic/download" id="download_form">
+        <input type="hidden" name="password" value="${password!}"/>
+        <input type="hidden" name="key" id="download_key_id"/>
+        <input type="hidden" name="aca_id" id="download_aca_id"/>
+    <div class="history_title">DOWNLOAD<a class="close" onclick="ui.closeWin()"></a></div>
+    <div class="history_content">
+        <!-- left -->
+        <div class="content_left">
+            <div class="history_b" style="height: 100%;">
+                <h1>Currently selected document collection：</h1>
+                <ul style="height: 320px;">
+                    <#if docs??>
+                        <#list docs as doc>
+                            <li style='border-bottom: 1px solid #443b3b;padding-top: 5px'><a>${doc.DOC_TITLE!}(${doc.DOC_VERSION!})</a></li>
+                        </#list>
+                    </#if>
+                </ul>
+                <p>Unzip password: <b>${password!}</b></p>
+                <button type="submit" class="but_01 download_btn" style="float: left; margin: 15px;border: 0px">DOWNLOAD</button>
+            </div>
+        </div>
+        <!-- left end-->
+
+        <!-- right -->
+        <div class="content_right">
+            <h1>Electronic contract</h1>
+            <span style="color:#fff; text-align:center; line-height:200px; font-size:30px; height: calc(100% - 178px);">content</span>
+            <strong><p>Name:</p><p>Date:2024-7-20</p><p>Electronic signature：</p></strong>
+            <h2>Electronic signature</h2>
+        </div>
+        <!-- right end-->
+    </div>
+    </form>
+</div>
+<script>
+    $("#download_key_id").val($("input[name='ACA_KEY']").val());
+    $("#download_aca_id").val($("input[name='ACA_ID']").val());
+</script>

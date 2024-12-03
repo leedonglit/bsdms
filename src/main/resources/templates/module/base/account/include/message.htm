@@ -1,0 +1,49 @@
+<!-- 右上内容 -->
+<div class="my_top">
+    <form id="message_academic_Form">
+        <span class="form_list">
+            <p>Time:</p>
+            <input placeholder="startTime" value="" type="text" name="MSG_TIME" op = ">=" id="start_Time_msg" class="form_text1" style="width: 150px;">
+            <p>-</p>
+            <input placeholder="endTime" value="" type="text" name="MSG_TIME" op = "<=" id="end_Time_msg" class="form_text1" style="width: 150px;">
+        </span>
+    </form>
+    <a onclick="message.loadData();" class="but_01" style="float: right; margin-top:5px;margin-right: 10px;">Search</a>
+</div>
+<!-- 右上内容 end-->
+
+<!-- 右下内容 -->
+<div class="my_bottom">
+    <div class="f_t_but">
+        <ul>
+            <li style="cursor: pointer;" onclick="message.deleteBatch();">
+                <a class="but_01 but_02">
+                    <i style="margin: 0px 3px 0 8px;"><img src="/module/base/images/icon_29.png"></i>
+                    <b>Batch Delete</b>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="tab_box" id="message_content"></div>
+</div>
+<!-- 右下内容 end-->
+<script>
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+
+        //执行一个laydate实例
+        laydate.render({
+            type: 'datetime',
+            elem: '#start_Time_msg'//指定元素
+        });
+
+        laydate.render({
+            type: 'datetime',
+            elem: '#end_Time_msg'//指定元素
+        });
+    });
+    $(document).ready(function (){
+        message.loadData();
+    });
+</script>
+

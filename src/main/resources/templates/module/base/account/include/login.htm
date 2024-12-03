@@ -1,0 +1,102 @@
+<script src = "/module/base/js/validate.js" type="text/javascript"></script>
+<div class="box_content" style="width: 615px;margin-left: -308px;">
+    <!--<div class="box_left">
+        <dl class="logo_t">
+            <dt><img src="/module/base/images/logo1.png"></dt>
+            <dd>
+                <h2>BSDMS</h2>
+                <p>Academic anti-counterfeiting</p>
+            </dd>
+        </dl>
+        <span class="information_text"><p>Full process academic anti-counterfeiting management and database system based on blockchain technology</p></span>
+        <span class="information_name">
+							<b><img src="/module/base/images/icon_19.png"></b>
+							<p>Dr Lee</p>
+							<p>Famous scholars</p>
+						</span>
+
+        <span class="introduction_text">
+							<h1>BSDMS</h1>
+							<p>Intelligent academic anti-counterfeiting leading platform</p>
+						</span>
+    </div>-->
+
+    <div class="box_right" style="float: unset;width: calc(100% - 85px);">
+<!--
+        <strong class="number"><span>切换二维码登录<b></b></span></strong>
+-->
+        <h1 class="login_title">Login</h1>
+        <ul class="login_information">
+            <li>
+								<span class="login_text">
+									<b><img src="/module/base/images/icon_21.png"></b>
+									<input type="text" name="username" value="dwlu@rcees.ac.cn" class="text_a">
+								</span>
+            </li>
+
+            <li>
+								<span class="login_text">
+									<b><img src="/module/base/images/icon_22.png"></b>
+									<input type="password" name="password" value="Ldw123456" class="text_a" style="font-size: 30px;">
+								</span>
+            </li>
+            <li>
+								<span class="login_text" style="width: 60%;float: left">
+									<b><img src="/module/base/images/icon_22.png"></b>
+									<input type="text" name="code" autocomplete="false" placeholder="Verification code" class="text_a" style="font-size: 27px;">
+								</span>
+                <span class="login_text" style="width: 40%;border: 0px;background: none;float: left">
+                    <img id="verificationCode" src="" style="width: calc(100% - 10px);height: 100%;border-radius: 5px;margin-left: 10px"/>
+                </span>
+            </li>
+            <li>
+                <!--<input type="checkbox" class="checkbox1">
+                <p class="l_t1">remember password</p>-->
+                <a class="l_t2" id="forgotpwd">Forgot password?</a>
+            </li>
+            <li><a class="login_but">login</a></li>
+            <li><p class="l_t3">No account? <a class="l_t4" onclick="login.loginToRegis()">Click here to register</a></p></li>
+        </ul>
+    </div>
+</div>
+<script>
+    $(function(){
+        //点击图片更新验证码
+        $("#verificationCode").click(function(){
+            login.getCaptcha();
+        })
+        //默认加载验证码
+        login.getCaptcha();
+        //忘记密码
+        $("#forgotpwd").click(function(){
+            login.forgotPwd();
+        })
+        //点击登录
+        $(".login_but").click(function(){
+            const username = $("input[name='username']").val();
+            const password = $("input[name='password']").val();
+            const code = $("input[name='code']").val();
+            if(username == ''){
+                layer.msg("Please input username !");
+                return;
+            }
+            if(!validate.email(username)){
+                layer.msg("email is nonlicet ！");
+                return;
+            }
+            if(password == ''){
+                layer.msg("Please input password !");
+                return;
+            }
+            if(!validate.pssword(password)){
+                layer.msg("password is nonlicet ！At least 6-12 characters,includeing one number/one uppercse letter/one lowerercase letter.");
+                return;
+            }
+            if(code == ''){
+                layer.msg("Please input verification code !");
+                return;
+            }
+            login.doLogin(username,password,code,'${from!}');
+        })
+    })
+</script>

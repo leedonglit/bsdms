@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html style="width: 100%; height: 100%;">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BSDMS - Search</title>
+    <#include "/common/content/base.html">
+    <script type="text/javascript" src="${ctxPath}/module/base/js/search.js"></script>
+</head>
+<body style="width: 100%; height: 100%;">
+<div class="bg">
+    <!-- header -->
+    <#include "/common/content/top.htm">
+    <!-- header end-->
+
+    <!-- content -->
+    <div class="content">
+        <form id="search_academic_Form">
+            <div class="t_query">
+                <div class="query_right">
+                    <input type="text" name="ACA_TITLE" op="like" value="" class="query_text" style="font-size: 18px;"/>
+                    <a href="#"><img onclick="search.loadData();" src="/module/base/images/icon_04.png"  style="width: 30px;"></a>
+                </div>
+            </div>
+        </form>
+        <div class="query_content">
+
+            <!-- left -->
+            <div class="screen_list">
+                <div class="screen_title"><p id="count">0 results from the BSDMS for:</p></div>
+                <div class="screen_content" id="checksList">
+
+                </div>
+            </div>
+            <!-- left end-->
+
+            <!-- right -->
+            <div class="query_list" style="overflow: auto;">
+
+            </div>
+            <!-- right end-->
+
+        </div>
+
+    </div>
+    <!-- content -->
+</div>
+<script>
+    $(function(){
+        search.loadData();
+        search.loadCheckData();
+    })
+</script>
+</body>
+</html>

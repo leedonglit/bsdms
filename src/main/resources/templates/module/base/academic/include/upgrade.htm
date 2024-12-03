@@ -1,0 +1,101 @@
+<style>
+    .add_list1{
+        padding: 0px;
+    }
+    .webuploader-pick {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        color: #fff;
+        text-align: center;
+        border-radius: 3px;
+        overflow: hidden;
+        padding: 0px;
+        background: transparent;
+    }
+    ::-webkit-scrollbar {
+        display: none;
+    }
+
+    .layui-layer-dialog .layui-layer-padding{
+        color: #4d3737;
+    }
+</style>
+<div class="history_box">
+    <div class="history_title">Upgrade to Node User<a class="close" onclick="ui.closeWin()"></a></div>
+    <div class="history_content" style="padding-top: 0px;overflow-y: scroll">
+        <form id="aca_document_upload_form" onsubmit="return false;">
+            <table border="0" cellspacing="0" cellpadding="0" class="add_tab" style="width: 100%">
+                <tbody>
+                <tr>
+                    <td class="add_list add_list1" style="width: 33%">
+                        <p>* Username:</p>
+                        <input type="text" name="USERNAME" class="text_01">
+                    </td>
+                    <td class="add_list add_list1" style="width: 33%">
+                        <p>* Password:</p>
+                        <input type="text" name="PASSWORD" class="text_01">
+                    </td>
+                    <td class="add_list add_list1">
+                        <p>* IP:</p>
+                        <input type="text" name="IP" class="text_01">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="add_list add_list1">
+                        <p>* Port:</p>
+                        <input type="text" name="PORT" class="text_01">
+                    </td>
+                    <td class="add_list add_list1">
+                        <p>* DBName:</p>
+                        <input type="text" name="DBNAME" class="text_01">
+                    </td>
+                    <td class="add_list add_list1">
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="add_list add_list1">
+                        <a class="but_01" style="float: left; margin-top: 25px;" onclick="upNode()">Submit</a>
+                        <a class="but_01" style="float: left; margin-left: 20px; margin-top: 25px;" href="http://www.idgar.org/api/downUserFiles/125983256989">Download MariaDB</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</div>
+<script>
+    function upNode(){
+        const name = $("#aca_document_upload_form input[name='USERNAME']").val();
+        const password = $("#aca_document_upload_form input[name='PASSWORD']").val();
+        const ip = $("#aca_document_upload_form input[name='IP']").val();
+        const port = $("#aca_document_upload_form input[name='PORT']").val();
+        const dbname = $("#aca_document_upload_form input[name='DBNAME']").val();
+        if(name == "" || password == "" || ip == "" || port == "" || dbname == ""){
+            layer.msg("Please enter the corret parameters !");
+            return;
+        }
+        const config = {
+            url: "/academic/initNode",
+            data: {
+                u: name,
+                p: password,
+                ip: ip,
+                port: port,
+                db: dbname,
+                aca: $("input[name='ACA_ID']").val()
+            },
+            callBackFunc: function (res) {
+                if (res.data) {
+                    layer.msg("Submit successfully !");
+                    ui.closeWin();
+                    $("#uptoGrade").remove();
+                } else {
+                    layer.msg("Submit error , Node params validation failed !");
+                }
+            }
+        };
+        HD.doPost(config);
+    }
+</script>

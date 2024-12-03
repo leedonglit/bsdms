@@ -1,0 +1,84 @@
+<!--[if lt IE 9]>
+<script type="text/javascript" src="/jSignature/libs/flashcanvas.js"></script><![endif]-->
+<script src="/jSignature/libs/jSignature.min.js"></script>
+<style>
+    .layui-layer{
+        background: #fff0;
+    }
+</style>
+<div class="history_box">
+    <form onsubmit="return false">
+        <input type="hidden" name="eSign"/>
+    <div class="history_title">Electronic contract<a class="close" onclick="ui.closeWin()"></a></div>
+    <div class="history_content">
+        <!-- right -->
+        <div class="content_right" style="width: 100%">
+            <div style="width: 100%;height: 315px;overflow-y: scroll">
+                <p style="color:#000; font-size:16px; line-height: 20px;">After signing this agreement, it means that you comply with the relevant regulations.</p>
+                <p style="color:#44464b; font-size:16px; line-height: 30px;">1. Purpose</p>
+                <p style="color:#000; font-size:16px; line-height: 20px;">The purpose of this Agreement is to protect the confidentiality of certain information that may be disclosed by one Party to the other in connection with a potential or ongoing business relationship.</p>
+                <p style="color:#44464b; font-size:16px; line-height: 30px;">2. Definition of Confidential Information</p>
+                <p style="color:#000; font-size:16px; line-height: 20px;">"Confidential Information" shall mean any information, in whatever form, disclosed by one Party to the other, whether in writing, orally, visually, or by any other means, that is marked as confidential or proprietary or, if disclosed orally or visually, is identified as confidential or proprietary at the time of disclosure and confirmed in writing as confidential or proprietary within a reasonable time thereafter. Confidential Information includes, but is not limited to, technical data, customer lists, pricing information, trade secrets, product plans, designs, marketing strategies, financial information, and business plans.</p>
+                <p style="color:#44464b; font-size:16px; line-height: 30px;">3. Obligation of Confidentiality</p>
+                <p style="color:#000; font-size:16px; line-height: 20px;">(a) Each Party agrees to use the Confidential Information of the other Party solely for the purposes for which it was disclosed and to protect such Confidential Information from unauthorized use, dissemination, or publication.
+(b) Each Party agrees not to disclose any Confidential Information of the other Party to any third party without the prior written consent of the disclosing Party, except to those employees, consultants, or advisors who need to know the information in order to fulfill the purposes for which it was disclosed and who have been advised of the confidential nature of the information and have agreed in writing to be bound by terms no less restrictive than those contained in this Agreement.</p>
+                <p style="color:#44464b; font-size:16px; line-height: 30px;">4. Exceptions</p>
+                <p style="color:#000; font-size:16px; line-height: 20px;">The obligations of confidentiality under this Agreement shall not apply to any information that:
+
+(a) is already known to the receiving Party at the time of disclosure, as evidenced by its written records;
+
+(b) is independently developed by the receiving Party without use of or reference to the Confidential Information of the disclosing Party;
+
+(c) is generally available to the public or becomes generally available to the public through no fault of the receiving Party; or
+
+(d) is required to be disclosed by law, regulation, or court order, but only to the extent required and after prior notification to the disclosing Party and cooperation in seeking protective orders or other appropriate relief.</p>
+                <p style="color:#44464b; font-size:16px; line-height: 30px;">5. Term and Termination</p>
+                <p style="color:#000; font-size:16px; line-height: 20px;">The obligations of confidentiality under this Agreement shall commence upon the disclosure of Confidential Information and shall continue indefinitely, unless otherwise agreed in writing by the Parties. Upon termination of this Agreement or upon request of the disclosing Party, the receiving Party shall return all Confidential Information, including all copies, summaries, and extracts, to the disclosing Party or, if requested by the disclosing Party, destroy such information and provide certification of destruction.</p>
+                <p style="color:#44464b; font-size:16px; line-height: 30px;">6. Remedies</p>
+                <p style="color:#000; font-size:16px; line-height: 20px;">In the event of a breach or threatened breach of this Agreement, the disclosing Party shall have the right to seek injunctive relief, as well as any other remedies available at law or in equity, including recovery of damages.</p>
+                <p style="color:#44464b; font-size:16px; line-height: 30px;">7. Governing Law</p>
+                <p style="color:#000; font-size:16px; line-height: 20px;">This agreement shall be governed by and interpreted in accordance with relevant laws, without regard to conflicts of law principles.</p>
+                <p style="color:#44464b; font-size:16px; line-height: 30px;">8. Entire Agreement</p>
+                <p style="color:#000; font-size:16px; line-height: 20px;">This Agreement constitutes the entire agreement between the Parties concerning the subject matter hereof and supersedes all prior and contemporaneous agreements, understandings, and representations. No modification or amendment of this Agreement shall be binding unless made in writing and signed by both Parties.</p>
+                <p style="color:#44464b; font-size:16px; line-height: 30px;">9. Severability</p>
+                <p style="color:#000; font-size:16px; line-height: 20px;">If any provision of this Agreement is found to be invalid or unenforceable by a court of competent jurisdiction, such provision shall be deemed severed from this Agreement and the remaining provisions shall continue in full force and effect.</p>
+                <p style="color:#000; font-size:16px; line-height: 30px;">IN WITNESS WHEREOF, the Parties have executed this Agreement as of the date first above written.</p>
+            </div>
+            <strong><p>Date:${currDate!}</p><p>Electronic signature：</p></strong>
+            <div id="signature" style="border:1px solid #1441c1;width: 100%;height:115px;background: #fff"></div>
+            <button type="submit" class="but_01 save_esign_btn" style="float: left; margin: 15px;">Agree</button>
+        </div>
+        <!-- right end-->
+    </div>
+    </form>
+</div>
+<script>
+    $("#download_key_id").val($("input[name='ACA_KEY']").val());
+    $("#download_aca_id").val($("input[name='ACA_ID']").val());
+    $(document).ready(function() {
+        $("#signature").jSignature({height:"110px",width:"100%",color:'#000'});
+        $(".save_esign_btn").click(function (){
+            if (checkEsign()){
+                academic.saveEsign($("input[name='eSign']").val());
+            }
+        });
+    })
+
+    function checkEsign(){
+        var $sigdiv = $("#signature")
+        var datapair = $sigdiv.jSignature("getData", "image")
+        console.log(datapair);
+        if(datapair[1] == "iVBORw0KGgoAAAANSUhEUgAAASEAAAA3CAYAAABD5fwpAAAAAXNSR0IArs4c6QAAAZVJREFUeF7t1MEJAAAIAzG7/9KOcZ+4QCHI7RwBAgRCgYXbpgkQIHAi5AkIEEgFRCjlN06AgAj5AQIEUgERSvmNEyAgQn6AAIFUQIRSfuMECIiQHyBAIBUQoZTfOAECIuQHCBBIBUQo5TdOgIAI+QECBFIBEUr5jRMgIEJ+gACBVECEUn7jBAiIkB8gQCAVEKGU3zgBAiLkBwgQSAVEKOU3ToCACPkBAgRSARFK+Y0TICBCfoAAgVRAhFJ+4wQIiJAfIEAgFRChlN84AQIi5AcIEEgFRCjlN06AgAj5AQIEUgERSvmNEyAgQn6AAIFUQIRSfuMECIiQHyBAIBUQoZTfOAECIuQHCBBIBUQo5TdOgIAI+QECBFIBEUr5jRMgIEJ+gACBVECEUn7jBAiIkB8gQCAVEKGU3zgBAiLkBwgQSAVEKOU3ToCACPkBAgRSARFK+Y0TICBCfoAAgVRAhFJ+4wQIiJAfIEAgFRChlN84AQIi5AcIEEgFRCjlN06AgAj5AQIEUgERSvmNEyAgQn6AAIFU4AEqSwA46AsEtQAAAABJRU5ErkJggg=="){
+            ui.msg("Please sign !");
+            return false;
+        }else {
+            $("input[name='eSign']").val(datapair[1]);
+            return true;
+        }
+    }
+</script>
+<style>
+    ::-webkit-scrollbar {
+        display: none;
+    }
+</style>

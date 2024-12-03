@@ -1,0 +1,93 @@
+
+.dynamics_list{
+	display: flex;
+	overflow: hidden;
+	justify-content: space-between;
+}
+
+.dynamics_list > span{
+	font-size: 18px;
+	color: #000;
+	text-align: center;
+	width: 130px;
+	display: block;
+	padding-top: 32px;
+}
+
+.dynamics_list > dl{
+	width: calc(100% - 160px);
+	display: flex;
+	border-left: #d2dafc 2px dashed;
+	position: relative;
+	justify-content: space-between;
+	box-sizing: border-box;
+	height: auto;
+	padding-bottom: 20px;
+}
+
+.dynamics_list > dl > dt{
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	background: #fff;
+	position: absolute;
+	left: -69px;
+	top: 2px;
+}
+
+.dynamics_list > dl > dd{
+	width: calc(100% - 35px);
+	height: auto;
+	border-radius: 10px;
+	border: #d2dafc 1px solid;
+	min-height: 20px;
+	box-sizing: border-box;
+	margin-left: 30px;
+	padding: 17px;
+	overflow: hidden;
+	position: relative;
+}
+
+.dynamics_list > dl > dd > h1{
+	font-size: 20px;
+	color: #2045ee;
+	font-weight: normal;
+}
+
+.dynamics_list > dl > dd > p{
+	padding: 10px 26px  0 26px;
+	font-size: 18px;
+	color: #333;
+
+}
+
+.dynamics_list > dl > dd > p > b{
+	font-weight: normal;
+}
+
+.dynamics_list > dl > dd > i{
+	width: 100%;
+	height: 2px;
+	background: #2045ee;
+	display: block;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+}
+
+.my_left dl dd{
+	line-height: 30px;
+}
+
+.my_left dl{
+	overflow: unset;
+}
+
+.log_desc p{
+	font-size: 16px !important;
+}
+
+.my_left h1{
+	padding-left:0px !important;
+	margin-top: 0px !important;
+}

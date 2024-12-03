@@ -1,0 +1,74 @@
+<div class="accunt_content">
+    <div class="history_content" style="width: 100%;padding: 0px;height: auto">
+        <!-- left -->
+        <div class="content_left" style="width: calc(50% - 1px);border-right: 1px solid #615050;">
+            <div class="history_b" style="height: 470px">
+                <h1>Generate key：</h1>
+                <h1>Please select the authorization file</h1>
+                <ul style="height: 320px;">
+                    <#if documents??>
+                        <#list documents as document>
+                            <li style="cursor: pointer" <!--onclick="academic.addDocToCreatKey(this,'${document.DOC_ID!}');"-->><a><!--<input type="checkbox">-->&nbsp;&nbsp;${document.DOC_FILE_NAME!}(${document.DOC_VERSION!})</a></li>
+                        </#list>
+                    </#if>
+                </ul>
+            </div>
+        </div>
+        <!-- left end-->
+
+        <!-- right -->
+        <div class="content_left" style="width: 50%">
+            <div class="history_b" style="height: 470px">
+                <h1></h1>
+                <h1>Please set permissions</h1>
+                <ul style="height: 320px;">
+                    <li>
+                        <p style="line-height: 50px;padding: 0px;font-size: 18px;font-weight: bold">
+                            Authorization duration：
+                        </p>
+                    </li>
+                    <li>
+                        <form id="key_form">
+                            <p style="line-height: 50px;">
+                                <input type="radio" checked id="od" value="1" name="failureTime"><label for="od">&nbsp;One day&nbsp;</label>
+                                <input type="radio" id="aw" value="2" name="failureTime"><label for="aw">&nbsp;A week&nbsp;</label>
+                                <input type="radio" id="ud" value="3" name="failureTime"><label for="ud">&nbsp;A month&nbsp;</label>
+                                <input type="radio" id="sti" value="4" name="failureTime"><label for="sti">&nbsp;Three months&nbsp;</label>
+                            </p>
+                            <input type="hidden" name="key" value="${KEY!}"/>
+                            <input type="hidden" name="acaId" value="${acaId!}"/>
+                        </form>
+                    </li>
+                    <li>
+                        <p style="line-height: 50px;padding: 0px;font-size: 18px;font-weight: bold">
+                            Permission key:<span id="key_span_area" style="font-size: 23px;color: orange">${KEY!}</span>
+                        </p>
+                    </li>
+                    <li><p style="line-height: 50px;padding: 0px;font-size: 18px;font-weight: bold">Please enter permission description:</p></li>
+                    <li>
+                        <div style="width: calc(100% - 20px);border: 1px dashed #ccc;color: #fff;font-size: 16px;padding: 10px;height: 90px" id="desc_content" contenteditable="true">
+                        </div>
+                    </li>
+                </ul>
+                <a class="but_01" onclick="$('#first_content').show();$('#second_content').hide();" style="float: left; margin: 15px;">Back</a>
+                <a class="but_01 save_btn" style="float: left; margin: 15px;">Save key</a>
+            </div>
+        </div>
+        <!-- right end-->
+    </div>
+
+    <div class="history_content" style="width: 100%;padding: 0px;height: 62%;border-top: 1px solid;">
+        <div class="content_left" style="width: 100%;">
+            <div class="history_b">
+                <div class="tab_box key_table" style="height: 100%">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    academic.loadKey('${acaId!}');
+    $(".save_btn").click(function (){
+        academic.saveKey('${acaId!}');
+    });
+</script>

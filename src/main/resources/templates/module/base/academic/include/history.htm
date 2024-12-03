@@ -1,0 +1,54 @@
+<style>
+    .layui-layer{
+        background: #fff0;
+    }
+    ::-webkit-scrollbar {
+        display: none;
+    }
+</style>
+<div class="history_box">
+    <div class="history_title">HISTORY<a class="close" onclick="ui.closeWin()"></a></div>
+    <div class="history_content">
+        <!-- left -->
+        <div class="content_left" style="width: 100%">
+            <div class="history_t">
+                <#if histories??>
+                    <#list histories as his>
+                        <span files='${his.DH_FILES!}' password="${his.DH_ZIP_PASSWORD!}" date="${his.Electronic_date!}" eSign="${his.Electronic_signature!}"><p>${his.DH_TIME!?substring(0,16)}</p><p><b>${(his.DH_FILES?eval)?size}</b> files</p><a href="/academic/re-download/${his.DH_ID!}">Re-download</a></span>
+                    </#list>
+                </#if>
+            </div>
+
+            <div class="history_b">
+                <h1>Selected document collection：</h1>
+                <ul>
+                    <#if histories?? && histories?size gt 0>
+                        <#assign his = histories[0]>
+                        <#list his.DH_FILES?eval as doc>
+                            <li style='border-bottom: 1px solid #443b3b;padding-top: 5px'><a>${doc.DOC_TITLE!}(${doc.DOC_VERSION!})</a></li>
+                        </#list>
+                    </#if>
+                </ul>
+                <p>Unzip password: <b id="password"><#if his??>${his.DH_ZIP_PASSWORD!}</#if></b></p>
+            </div>
+        </div>
+        <!-- left end-->
+    </div>
+</div>
+<script>
+    $(".history_t span").click(function (){
+        let files = $(this).attr("files");
+        const password = $(this).attr("password");
+        const date = $(this).attr("date");
+        const eSign = $(this).attr("eSign");
+        files = JSON.parse(files);
+        $(".history_b ul").empty();
+        for (let i = 0; i < files.length; i++) {
+            $(".history_b ul").append("<li style='border-bottom: 1px solid #443b3b;padding-top: 5px'><a>"+files[i].DOC_TITLE+"("+files[i].DOC_VERSION+")</a></li>");
+        }
+        $("#password").html(password);
+        $("#date").html("Date:"+date);
+        $("#eSign").html("<img src='data:image/png;base64,"+eSign+"' width='230'/>");
+    });
+    $(".history_t span:eq(0)").bind("click");
+</script>

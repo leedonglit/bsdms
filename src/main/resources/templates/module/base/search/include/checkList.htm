@@ -1,0 +1,98 @@
+<ul class="s_l_c">
+    <li><h2>Year</h2></li>
+    <#if years??>
+        <#list years as y>
+            <li class="yea"><input style="cursor:pointer;" type="checkbox" value="${y.ACA_YEARS?c}"><p style="margin-top: 2px;">${y.ACA_YEARS?c}</p></li>
+        </#list>
+    </#if>
+    <li><h2>Industry classification</h2></li>
+    <#if classs??>
+        <#list classs as cl>
+            <li class="ind"><input style="cursor:pointer;" type="checkbox" value="${cl.ACA_CLASS!}"><p style="margin-top: 2px;">${cl.ACA_CLASS!}</p></li>
+        </#list>
+    </#if>
+    <li><h2>Author</h2></li>
+    <#if authors??>
+        <#list authors as au>
+            <li class="aut"><input style="cursor:pointer;" type="checkbox" value="${au.user_id!}"><p style="margin-top: 2px;">${au.user_name!}</p></li>
+        </#list>
+    </#if>
+    <li><h2>Organizations</h2></li>
+    <#if orgs??>
+        <#list orgs as or>
+            <li class="org"><input style="cursor:pointer;" type="checkbox" value="${or.ACA_ORG!}"><p style="margin-top: 2px;">${or.ACA_ORG!}</p></li>
+        </#list>
+    </#if>
+</ul>
+<script>
+    $(function(){
+        $(".ind input").each(function(n,m){
+            $(m).on('click', function() {
+                if(this.checked) {
+                    // Checkbox 被选中时的操作
+                    $(".ind input").each(function(k,l){
+                        $(l).prop("checked",false);
+                    });
+                    $(this).prop("checked",true);
+                    inds = [];
+                    inds.push($(this).val());
+                } else {
+                    // Checkbox 被取消选中时的操作
+                    inds = [];
+                }
+                search.loadData();
+            });
+        })
+        $(".aut input").each(function(n,m){
+            $(m).on('click', function() {
+                if(this.checked) {
+                    // Checkbox 被选中时的操作
+                    $(".aut input").each(function(l,k){
+                        $(k).prop("checked",false);
+                    });
+                    $(this).prop("checked",true);
+                    auts = [];
+                    auts.push($(this).val());
+                } else {
+                    // Checkbox 被取消选中时的操作
+                    auts.splice(auts.indexOf($(this).val()),1)
+                }
+                search.loadData();
+            });
+        })
+        $(".org input").each(function(n,m){
+            $(m).on('click', function() {
+                if(this.checked) {
+                    // Checkbox 被选中时的操作
+                    $(".org input").each(function(l,k){
+                        $(k).prop("checked",false);
+                    })
+                    $(this).prop("checked",true);
+                    orgs = [];
+                    orgs.push($(this).val());
+                } else {
+                    // Checkbox 被取消选中时的操作
+                    orgs = [];
+                }
+                search.loadData();
+            });
+        })
+        $(".yea input").each(function(n,m){
+            $(m).on('click', function() {
+                if(this.checked) {
+                    // Checkbox 被选中时的操作
+                    $(".yea input").each(function(l,k){
+                        $(k).prop("checked",false);
+                    })
+                    $(this).prop("checked",true);
+                    yeas = [];
+                    yeas.push($(this).val());
+                } else {
+                    // Checkbox 被取消选中时的操作
+                    yeas = [];
+                }
+                search.loadData();
+            });
+        })
+    })
+</script>

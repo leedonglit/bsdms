@@ -1,0 +1,56 @@
+<!-- header -->
+<div class="header">
+    <div class="logo">
+        <dl>
+            <dt><img src="/module/base/images/logo.png" width="100%"></dt>
+            <dd>BSDMS</dd>
+        </dl>
+    </div>
+    <div class="nav">
+        <ul>
+            <li><a tag="home" href="/home">Home<b></b></a></li>
+            <li><a tag="project" href="/account/index?page=0">Project<b></b></a></li>
+            <li><a tag="participated" href="/account/index?page=1">Participated<b></b></a></li>
+            <li><a href="/search" tag="search">Search<b></b></a></li>
+            <li><a href="/tutorial" tag="tutorial">Tutorial<b></b></a></li>
+            <li><a href="/contact" tag="contact">Contact<b></b></a></li>
+            <li><a href="/about" tag="about">About<b></b></a></li>
+        </ul>
+    </div>
+    <div class="header_right">
+        <!--<a class="h_r_but"><i><img src="/module/base/images/icon_01.png"></i><p>English</p><b></b></a>-->
+        <#if _user_content??>
+            <a class="h_r_but" onclick="$('.news').toggle()"><i><img width="25" src="/module/base/images/icon_02.png"><strong></strong></i></a>
+            <a class="h_r_but" href="/account/index">
+                <i style="float: right;"><img src="/module/base/images/icon_03.png"></i>
+                <p style="color: black;">${_user_content.userName!}</p>
+            </a>
+        <#else>
+            <a class="h_r_but" onclick="login.openLogin()"><p <!--style="color: #4158e6;"-->Login</p></a>
+            <a class="h_r_but" onclick="login.openRegister()"><p <!--style="color: #4158e6;"-->Register</p></a>
+        </#if>
+        <!-- 消息弹窗 -->
+        <div class="news" style="display: none">
+            <span class="news_l_t"></span>
+            <span class="news_r_t"></span>
+            <span class="news_l_b"></span>
+            <span class="news_r_b"></span>
+            <span class="news_t"></span>
+            <ol class="news_list">
+                <li style="border-bottom: none;"><a class="but_01" <#if _user_content??>href="/account/index?page=3"</#if>>MORE</a></li>
+            </ol>
+        </div>
+        <!-- 消息弹窗 end-->
+    </div>
+</div>
+<!-- header end-->
+<script>
+    const pg = '${page!}';
+    if(pg == "0"){
+        $(".nav ul li a[tag='project']").addClass("show_01");
+    }else if(pg == "1"){
+        $(".nav ul li a[tag='participated']").addClass("show_01");
+    }else{
+        $(".nav ul li a[tag='${page!}']").addClass("show_01");
+    }
+</script>

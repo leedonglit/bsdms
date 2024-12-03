@@ -1,0 +1,72 @@
+<!-- 右上内容 -->
+<div class="my_top">
+    <form id="manage_academic_Form">
+    <span class="form_list">
+        <p>Time:</p>
+        <input placeholder="startTime" type="text" name="user_regtime" op=">=" id="start_Time_manage" class="form_text1" style="width: 150px;">
+        <p>-</p>
+        <input placeholder="endTime" type="text" id="end_Time_manage" name="user_regtime" op="<=" class="form_text1" style="width: 150px;">
+    </span>
+    <span class="form_list">
+        <p>Status:</p>
+        <strong class="user_select">
+            <select name = "user_status" op="=">
+                <option value="0">Inactive</option>
+                <option value="1">Active</option>
+                <option value="2">Disable</option>
+            </select>
+            <b></b>
+            <a class="query_b1"></a>
+        </strong>
+    </span>
+    </form>
+    <a onclick="manage.loadData();" class="but_01" style="float: right; margin-top:5px;margin-right: 10px;">Search</a>
+</div>
+<!-- 右上内容 end-->
+
+<!-- 右下内容 -->
+<div class="my_bottom">
+    <div class="f_t_but">
+        <ul>
+            <li onclick="manage.batchOperations(1);">
+                <a class="but_01 but_02">
+                    <i style="margin: 0px 3px 0 8px;"><img src="/module/base/images/icon_36.png"></i>
+                    <b>Batch Lock</b>
+                </a>
+            </li>
+            <li onclick="manage.batchOperations(2);">
+                <a class="but_01 but_02">
+                    <i style="margin: 0px 3px 0 8px;"><img src="/module/base/images/icon_35.png"></i>
+                    <b>Batch Active</b>
+                </a>
+            </li>
+            <li onclick="manage.batchOperations(3);">
+                <a class="but_01 but_02">
+                    <i style="margin: 0px 3px 0 8px;"><img src="/module/base/images/icon_29.png"></i>
+                    <b>Batch Delete</b>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="tab_box" style="height: calc(100% - 30px);" id="manage_content"></div>
+</div>
+<!-- 右下内容 end-->
+<script>
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+
+        //执行一个laydate实例
+        laydate.render({
+            type: 'datetime',
+            elem: '#start_Time_manage'//指定元素
+        });
+
+        laydate.render({
+            type: 'datetime',
+            elem: '#end_Time_manage'//指定元素
+        });
+    });
+    $(document).ready(function (){
+        manage.loadData();
+    });
+</script>

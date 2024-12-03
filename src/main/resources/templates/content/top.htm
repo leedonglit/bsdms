@@ -1,0 +1,166 @@
+<script type="text/javascript" src="/js/top.js"></script>
+<input id="toRegister" type="hidden" name="toReg" value="${toRegister!}"/>
+<nav class="n-nav">
+	<div class="n-box" id="toolp">
+		<em class="n-nav-logo" onclick="window.location.href='/'"><img src='/module/base/images/logo.png' width="250"/></em>
+		<div class="n-nav-links">
+			<a class="n-nav-links-cur" href="javascript:;">Home</a>
+			<a href="javascript:;">Tutorial</a>
+			<a href="javascript:;">PM</a>
+			<a href="javascript:;">Source</a>
+			<a href="javascript:;">Data</a>
+			<a href="javascript:;">Upload</a>
+			<a href="javascript:;">One-click Tracing</a>
+		</div>
+			<a id="register" href="javascript:;" style="margin-right: 10px;" class="n-nav-btn">Register</a>
+			<a id="login" href="javascript:;" class="n-nav-btn">Login</a>
+	</div>
+</nav>
+<script>
+var topPage = ["home","tutorial","pm","source","data","upload","tracing"];
+var topClass = ["phome","ppm","ppm","ppm","pdata","pupload","ptracing"]
+//菜单绑定点击事件
+$(".n-nav-links a").each(function(n,m){
+	//点击时加载相应的页面
+	$(m).click(function(){
+		var pageName = topPage[n];
+		var config = {
+				url:'/'+pageName,
+				data:{},
+				obj:"#content",
+				callBackFunc:function(){
+					$("#register").removeClass("n-nav-btnCur");
+					// $("#register").addClass("n-nav-btnText");
+					//选中样式
+					$(".n-nav-links-cur").removeClass("n-nav-links-cur");
+					$(m).addClass("n-nav-links-cur");
+					//主div样式
+					$("#mainDiv").removeAttr("class");
+					$("#mainDiv").attr("class","n "+topClass[n]);
+					//设置title
+					//$("#title").text(topPage[n]);
+					//fotter处理
+					if(n != '0'){
+						$(".n-footer").hide();
+					}else{
+						$(".n-footer").show();
+					}
+
+					//console.log(n);
+					if(n == '4'){ //data
+						$("#content").attr("class","pdata-main n-box");
+						//$("#content").append("<div id='toUpload' class='pdata-btn'><img src='/module/base/images/25.png' /><p>Upload New Data</p></div>")
+					}else if(n == '5'){
+						$("#content").attr("class","pupload-oper n-box");
+					}else if(n == '6'){
+						$("#content").attr("class","ptracing-main n-box");
+					}else{
+						$("#content").attr("class","n-box phome-content");
+					}
+					
+					if(n == '1'){
+						$("#mainDiv").css("padding-bottom","0px");
+					}else{
+						$("#mainDiv").css("padding-bottom","300px");
+					}
+				},
+				callBackErrorFunc:function(){}
+		};
+		HD.loadAsy(config);
+	})
+})
+//默认加载home页
+//$(".n-nav-links a").eq(0).click();
+//绑定登录
+$("#login").click(function(){
+	window.location.href = '/login'
+})
+//绑定注册
+$("#register").click(function(){
+	var config = {
+			url:'/register',
+			data:{},
+			obj:"#content",
+			callBackFunc:function(){
+				//选中样式
+				$(".n-nav-links-cur").removeClass("n-nav-links-cur");
+				$("#register").removeClass("n-nav-btnText");
+				$("#register").addClass("n-nav-btnCur");
+				//主div样式
+				$("#mainDiv").removeAttr("class");
+				$("#mainDiv").attr("class","n pregister");
+				$(".n-footer").hide();
+			},
+			callBackErrorFunc:function(){}
+	};
+	HD.loadAsy(config);
+})
+//检查是否有用户登录
+var userconfig ={ 
+		url:"/api/user",
+	    data:{},
+		callBackFunc:function(res){
+			if(res.data != null){
+				//已登录
+				var userName = res.data.user_name;
+				if(userName && userName.length > 11){
+					userName = userName.substring(0,10)+"...";
+				}
+				$("#register").hide();
+				$("#login").hide();
+				$("#toolp").append("<a title='"+res.data.user_name+"' id='userInfo' onclick='userInfo()' href='#' class='n-nav-btn n-nav-btnText'><span style='color:#00f700'>"+userName+"&nbsp;<img width='30' height='30' src='/module/base/images/user-head.png'/></span></a>"+
+								   "<a id='Logout' onclick='Logout()' href='#' class='n-nav-btn n-nav-btnText'>Logout</a>");
+			}else{
+				$("#register").show();
+				$("#login").show();
+				$("#userInfo").hide();
+				$("#Logout").hide();
+			}
+		}
+	};
+HD.doPost(userconfig);
+
+//用户信息
+function userInfo(){
+	var config = {
+			url:'/api/loaduser',
+			data:{},
+			callBackFunc:function(res){
+				if(res.data != null){
+					//选中样式
+					$(".n-nav-links-cur").removeClass("n-nav-links-cur");
+					//fotter处理
+					$(".n-footer").hide();
+					//主div样式
+					$("#mainDiv").removeAttr("class");
+					$("#mainDiv").attr("class","n pregister");
+					$("#content").html(res.data)
+				}
+			},
+			callBackErrorFunc:function(){}
+	};
+	HD.doPost(config);
+}
+
+//退出登录
+function Logout(){
+	var config = {
+			url:'/api/logout',
+			data:{},
+			callBackFunc:function(res){
+				if(res){
+					layer.msg("Log out !");
+					$(".n-nav-links a").eq(0).click();
+					HD.doPost(userconfig);
+				}else{
+					layer.msg("Log out error!");
+				}
+			},
+			callBackErrorFunc:function(){}
+	};
+	ui.confirmDoAjax("Are you sure you want to log out ?",config);
+	//修改layer弹窗，中文“信息”修改为"message"
+	$(".layui-layer-title").text("Message");
+	
+}
+</script>

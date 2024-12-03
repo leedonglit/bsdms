@@ -1,0 +1,215 @@
+<style>
+
+    .add_list1{
+        padding: 0px;
+    }
+    .webuploader-pick {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        color: #fff;
+        text-align: center;
+        border-radius: 3px;
+        overflow: hidden;
+        padding: 0px;
+        background: transparent;
+    }
+     ::-webkit-scrollbar {
+         display: none;
+     }
+
+    .layui-layer-dialog .layui-layer-padding{
+        color: #4d3737;
+    }
+</style>
+<div class="history_box">
+    <div class="history_title">UPLOAD<a class="close" onclick="ui.closeWin()"></a></div>
+    <div class="history_content" style="padding-top: 0px;overflow-y: scroll">
+        <form id="aca_document_upload_form" onsubmit="return false;">
+            <input type="hidden" name="DOC_FILE_NAME"/>
+            <input type="hidden" name="DOC_FILE_PATH"/>
+            <input type="hidden" name="DOC_FILE_REALNAME"/>
+        <table border="0" cellspacing="0" cellpadding="0" class="add_tab" style="width: 100%">
+            <tbody>
+            <tr>
+                <td class="add_list add_list1" style="width: 33%">
+                    <p>* File Name:</p>
+                    <input type="text" name="DOC_TITLE" class="text_01">
+                </td>
+                <td class="add_list add_list1" style="width: 33%">
+                    <p>* File Type:</p>
+                    <input type="text" name="DOC_TYPE" class="text_01">
+                </td>
+                <td class="add_list add_list1">
+                    <p>* Desc:</p>
+                    <input type="text" name="DOC_DESC" class="text_01">
+                </td>
+            </tr>
+            <tr>
+                <td class="add_list add_list1">
+                    <p>* Version:</p>
+                    <input type="text" name="DOC_VERSION" readonly class="text_01">
+                </td>
+                <td class="add_list add_list1">
+                    <p>Size:</p>
+                    <input type="text" name="DOC_SIZE" readonly class="text_01">
+                </td>
+                <td class="add_list add_list1">
+
+                </td>
+            </tr>
+            <tr>
+                <td class="add_list add_list1">
+                    <p>* Is Sample:</p>
+                    <input type="radio" id = "Sample_radio_1" value="1" name="Sample_radio" style="width: 20px;"><label for="Sample_radio_1" style="color: #000"> Yes </label>
+                    <input type="radio" id = "Sample_radio_0" value="0" name="Sample_radio" style="width: 20px;"><label for="Sample_radio_0" style="color: #000"> No </label>
+                </td>
+                <td class="add_list add_list1 sample_data_input_area">
+                    <p>* Kinds:</p>
+                    <input type="text" name="Kinds" class="text_01">
+                </td>
+                <td class="add_list add_list1 sample_data_input_area">
+                    <p>* Date Acquired:</p>
+                    <input type="text" name="Acquired" class="text_01">
+                </td>
+            </tr>
+            <tr class="sample_data_input_area">
+                <td class="add_list add_list1">
+                    <p>* Acquisition Methods:</p>
+                    <input type="text" name="AMethods" class="text_01">
+                </td>
+                <td class="add_list add_list1">
+                    <p>* Acquisition location:</p>
+                    <input type="text" name="ALocation" class="text_01">
+                </td>
+                <td class="add_list add_list1">
+                    <p>* Storage location:</p>
+                    <input type="text" name="SLocation" class="text_01">
+                </td>
+            </tr>
+            <tr>
+                <td class="add_list add_list1 original_document_sel" colspan="3">
+                    <p>* Original document:</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="add_list add_list1" colspan="3">
+                    <a class="but_05" id="upload_btn" style="float: left; margin-top: 25px;">Upload File</a>
+                    <p style="margin-top:14px">&nbsp;&nbsp;(Maximum allowable 100MB)</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="add_list add_list1">
+                    <a class="but_01" style="float: left; margin-top: 25px;" onclick="academic.submitDocument()">Submit</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        </form>
+    </div>
+</div>
+<script>
+    //绑定Upload点击事件
+    //var extension = ["doc","docx","xls","xlsx","ppt","pptx","pdf","txt","jpg","jpeg","png","gif","bmp","zip","rar","7z","tar","gz","tgz"];
+    var pmuploader = WebUploader.create({
+        swf: '/webuploader/Uploader.swf',
+        server: "/academic/upload/"+$("input[name='ACA_ID']").val(),
+        pick: '#upload_btn',
+        resize: false,
+        auto: true,
+        fileNumLimit: 1,
+        fileSizeLimit: 1024*1024*100,//100M
+        fileSingleSizeLimit: 1024*1024*100,
+        // accept: {
+        //     title: 'All',
+        //     extensions: 'doc,docx,xls,xlsx,ppt,pptx,pdf,txt,jpg,jpeg,png,gif,bmp,zip,rar,7z,tar,gz,tgz'
+        // }
+    });
+    let flag = true;
+    pmuploader.on('beforeFileQueued', function(file) {
+        // const ext = file.ext.toLowerCase();
+        // if (extension.indexOf(ext) === -1) {
+        //     flag = false;
+        //     ui.alert('File extension not allowed: ' + ext);
+        //     return false;
+        // }
+        //不能存在同名文档, 否则网络图无法显示
+        if ($("#docToby tr:eq(0) td").length > 1){
+            $(".academic_table tr:gt(0)").each(function (index){
+                let title = $(this).find("td:eq(2)").attr("title");
+                if(title === file.name){
+                    ui.alert('The file already exists: ' + file.name);
+                    flag = false;
+                    return false;
+                }
+            });
+            if(!flag){
+                return false;
+            }
+        }
+        if (file.size > 1024 * 100 * 1024) { // 100MB
+            ui.alert('File size exceeds the limit of 100MB.');
+            flag = false;
+            return false;
+        }
+    });
+    pmuploader.on('fileQueued', function(file) {
+        layer.closeAll("loading");
+    });
+    pmuploader.on('uploadSuccess', function(file,data) {
+        pmuploader.reset();
+        layer.closeAll("loading");
+        if(data.code != null && data.code == '-101'){
+            layer.msg("Upload Error,Maximum upload size exceeded !");
+            return;
+        }else{
+            let upFile = data.data[0];
+            $("input[name='DOC_TYPE']").val(upFile.ext);
+            $("input[name='DOC_SIZE']").val((upFile.fileSize/1024.0/1024.0).toFixed(2)+"MB");
+            $("input[name='DOC_TITLE']").val(upFile.fileName);
+            $("input[name='DOC_FILE_NAME']").val(upFile.fileName);
+            $("input[name='DOC_FILE_REALNAME']").val(upFile.uuidName);
+            $("input[name='DOC_VERSION']").val(upFile.version);
+            $("input[name='DOC_FILE_PATH']").val(encodeURIComponent(upFile.filePath));
+            // $("input[name='DATA_HASH']").val(upFile.fileHash);
+            layer.msg("Upload Success！");
+        }
+    });
+    pmuploader.on('uploadError', function(file) {
+        layer.closeAll("loading");
+        layer.msg("Upload Error!");
+    });
+    pmuploader.on('startUpload', function(file) {
+        if(flag){
+            ui.popProcess();
+        }
+    });
+    pmuploader.on('stopUpload', function(file) {
+        layer.closeAll("loading");
+    });
+    $("input[name='Sample_radio']").change(function (){
+        if ($(this).val() == '0'){
+            $(".sample_data_input_area").hide();
+        }else{
+            $(".sample_data_input_area").show();
+        }
+    });
+
+    $(document).ready(function (){
+        if ($("#docToby tr:eq(0) td").length > 1){
+            $(".academic_table tr:gt(0)").each(function (index){
+                $(".original_document_sel").append("<input id='sel-"+index+"' type=\"checkbox\" value='"+$(this).find("td:eq(0) input:eq(0)").val()+"' name=\"DOC_ORIGINAL\"><label for='sel-"+index+"' style='color: #001959;margin: 0px 10px;line-height: 30px;'>"+$(this).find("td:eq(2)").attr("title")+"("+$(this).find("td:eq(7)").html()+")</label>");
+            });
+        }
+
+        //修改样式
+        setTimeout(function (){
+            var ahtml = $(".webuploader-container div:eq(1)")[0];
+            $(ahtml).css({
+                "inset":"0px auto auto 0px",
+                "width":"130px",
+                "height":"35px"
+            })
+        },1000)
+    });
+</script>

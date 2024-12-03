@@ -1,0 +1,32 @@
+<table border="0" cellspacing="0" cellpadding="0" class="tab" id="academic-table-user">
+    <tr class="tab_title">
+        <th><input onclick="manage.checkAll(this);" type="checkbox" class="checkbox3"></th>
+        <th>NO</th>
+        <th>User No</th>
+        <th>User Name</th>
+        <th>Status</th>
+        <th>Ip</th>
+        <th>Registration time</th>
+        <th>Email</th>
+        <th>Research Direction</th>
+        <th>Web</th>
+    </tr>
+    <tbody>
+    <#list gpage.result as page>
+        <tr <#if page_index%2 == 0>class="tab_c2"<#else>class="tab_c1"</#if>>
+            <td><input type="checkbox" class="checkbox3" value="${page.user_id!}"></td>
+            <td>${page_index+1}</td>
+            <td>${page.user_no!}</td>
+            <td>${page.user_name!}</td>
+            <td>${page.user_status!}</td>
+            <td>${page.user_ip!}</td>
+            <td>${page.user_regtime!?string('yyyy-MM-dd')}</td>
+            <td>${page.user_email!}</td>
+            <td>${page.user_interests!}</td>
+            <td>${page.user_page!}</td>
+        </tr>
+    </#list>
+    </tbody>
+</table>
+<#import "/common/macro_component/page.ftl" as c1>
+<@c1.page1 page = gpage objID="message_academic_Form" callback="message.loadData()" showCount="15"/>

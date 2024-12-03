@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html style="width: 100%; height: 100%;">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BSDMS - Contact</title>
+    <#include "/common/content/base.html">
+    <script type="text/javascript" src="/map/openlayer/build/ol.js"></script>
+    <link rel="stylesheet" href="/map/openlayer/css/ol.css">
+    <style>
+        .home_text p{
+            text-align: left;
+            line-height: 100px;
+            color: black;
+        }
+        a{
+            color: black;
+        }
+    </style>
+</head>
+<body style="width: 100%; height: 100%;">
+<div class="bg">
+    <#include "/common/content/top.htm">
+    <!-- content -->
+    <div class="content">
+        <div class="home_text">
+            <h1><b>Contact US</b></h1>
+        </div>
+        <div style="width: 100%;height: 100px;background: #eee;margin-top: 30px;">
+            <p style="text-align: center;font-size: 25px;color: black;line-height: 65px">Joint exchange and learning</p>
+            <p style="text-align: center;color: black;font-size: 18px;">Let's work together to create a fair and just academic exchange platform that is more open, transparent, and authentic; Make significant contributions to the scientific research industry.</p>
+        </div>
+        <div class="home_text contact-info" style="width: 35%;float: left;margin-top: 2%">
+            <p><strong>Address：</strong>No. 18 Shuangqing Road, Haidian District, Beijing</p>
+            <p><strong>Website：</strong><a href="http://www.rcees.ac.cn/">http://www.rcees.ac.cn</a></p>
+            <p><strong>Telephone：</strong>+86 123 4567 8900</p>
+            <p><strong>Email：</strong>dwlu@rcees.ac.cn</p>
+        </div>
+        <div style="height: 400px;float:left;width: 65%;margin-top: 2%">
+            <div id="map"></div>
+        </div>
+    </div>
+    <!-- content -->
+</div>
+</body>
+</html>
+<script>
+    $(function(){
+        //创建地图
+        map = new ol.Map({
+            // 设置地图图层
+            layers: [
+                new ol.layer.Tile({
+                    source:new ol.source.XYZ({
+                        url:'https://webrd01.is.autonavi.com/appmaptile?x={x}&y={y}&z={z}&size=1&scale=1&style=8&lang=en',
+                        wrapX:false
+                    }),
+                    projection:'EPSG:4326'
+                })
+            ],
+            // 设置显示地图的视图
+            view: new ol.View({
+                center: [116.34,39.97],    // 定义地图显示中心于经度0度，纬度0度处
+                zoom: 8,// 并且定义地图显示层级为5
+                maxZoom: 17,  //地图的最大放大级别
+                minZoom:1,   //地图的自小放大级别
+                // 指定投影使用EPSG:4326
+                projection: 'EPSG:4326' ,
+            }),
+            // 让id为map的div作为地图的容器
+            target: 'map',
+            //
+            loadTilesWhileAnimating: true,
+        });
+
+        Pointlayer = new ol.layer.Vector({
+            source: new ol.source.Vector({wrapX:false})
+        })
+        // 添加图层
+        map.addLayer(Pointlayer);
+
+        var feature = new ol.Feature({
+            // 经纬度转换成坐标信息
+            geometry: new ol.geom.Point([116.34,39.97]),
+        })
+
+        feature.setStyle(
+            new ol.style.Style({
+                // 标点的图片，如果要标不同类型的点，这个图片可以判断加
+                image: new ol.style.Icon({
+                    opacity: 1,
+                    src: "/map/images/Point.png",
+                    scale: 0.7
+                }),
+            }));
+        Pointlayer.getSource().addFeature(feature);
+    })
+</script>

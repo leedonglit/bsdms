@@ -1,0 +1,20 @@
+<table border="0" cellspacing="0" cellpadding="0" class="tab">
+    <tbody><tr class="tab_title">
+        <th>Index</th>
+        <th>Permission key</th>
+        <th>Terminal</th>
+        <th>Description</th>
+        <th>Operate</th>
+    </tr>
+    <#list result as key>
+        <#assign param = key.LK_PARAM?eval>
+        <tr class="tab_c1">
+            <td>${key_index+1}</td>
+            <td>${param.key!}</td>
+            <td>${param.terminal!}</td>
+            <td>${param.desc_content!}</td>
+            <td><a onclick="javascript:academic.delKey('${acaId!}','${key.LK_ID!}')">Delete</a></td>
+        </tr>
+    </#list>
+    </tbody>
+</table>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html style="width: 100%; height: 100%;" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Create academic research projects</title>
+    <#include "/common/content/base.html">
+</head>
+<body style="width: 100%; height: 100%;">
+<div class="bg">
+    <#include "/common/content/top.htm">
+    <!-- content -->
+    <div class="content">
+        <!-- left -->
+        <div class="add_left">
+            <h1 class="add_title">New Project</h1>
+            <table border="0" cellspacing="0" cellpadding="0" class="add_tab">
+                <tr>
+                    <td class="add_list">
+                        <p><b>*</b> Project Code</p>
+                        <input type="text" class="text_01" name="ACA_CODE" readonly <#if operate == 'edit'>value = "${academic.ACA_CODE!}"<#else>value="${pro_code!}"</#if> />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="add_list">
+                        <p><b>*</b> Project Name</p>
+                        <input type="text" class="text_01" name = "ACA_TITLE" <#if operate == 'edit'>value = "${academic.ACA_TITLE!}"</#if> />
+                    </td>
+                </tr>
+                <!--<tr>
+                    <td class="add_list">
+                        <p>Structure<b>*</b></p>
+                        <span><b>structure1</b><a><img src="/module/base/images/icon_32.png"></a></span>
+                        <span><b>structure2</b><a><img src="/module/base/images/icon_32.png"></a></span>
+                        <span><b>structure3</b><a><img src="/module/base/images/icon_32.png"></a></span>
+                        <a class="but_03"><img src="/module/base/images/icon_31.png"></a>
+                    </td>
+                </tr>-->
+                <tr>
+                    <td class="add_list">
+                        <p><b>*</b> Industry classification</p>
+                        <input type="text" class="text_01" name = "ACA_CLASS" <#if operate == 'edit'>value = "${academic.ACA_CLASS!}"</#if> />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="add_list">
+                        <p><b>*</b> Project Plan</p>
+                        <input readonly type="text" class="text_01" name = "ACA_START_TIME" <#if operate == 'edit'>value = "${academic.ACA_START_TIME!?string('yyyy-MM-dd')}"<#else>value="${pro_start_date!}"</#if> />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="add_list">
+                        <p><b>*</b> Describe</p>
+                        <textarea class="text_03" name = "ACA_DESC"><#if operate == 'edit'> ${academic.ACA_DESC!}</#if></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="add_list">
+                        <#if documents??>
+                            <p>Files</p>
+                        </#if>
+                        <!--<a class="but_04"><img src="/module/base/images/icon_34.png"></a>-->
+                        <div style="height: 135px;overflow: auto;">
+                            <#if documents??>
+                                <#list documents as doc>
+                                    <span style="margin-top: 5px;"><b>${doc.DOC_FILE_NAME!}</b><#--<a onclick="delDocments('${doc.DOC_ID!}',this)"><img src="/module/base/images/icon_32.png"></a>--></span>
+                                </#list>
+                            </#if>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="add_list">
+                        <a class="but_01" id="DetailBack" style="float: left;;margin-top: 10px;margin-left: 170px;">BACK</a>
+                        <a class="but_01" id="createProject" style="float: left;margin-top: 10px;margin-left: 40px;">
+                            <#if operate == 'edit'>UPDATE<#else>CREATE</#if>
+                        </a>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+        <!-- left end -->
+
+        <!-- right -->
+        <div class="add_right">
+            <h1 class="add_title">Project development phase</h1>
+            <div class="tab_box" style="height: calc(100% - 35px);">
+                <table border="0" cellspacing="0" cellpadding="0" class="tab">
+                    <tr class="tab_title">
+                        <td><div class="add_phase_tr_btn" style="color:#fff; cursor:pointer;width: 25px;height: 25px;line-height:25px;background: rgba(102, 102, 102, 1);text-align: center;font-weight: bold">+</div></td>
+                        <th>Phase Name</th>
+                        <th>Desc</th>
+                        <th>Plan Start Time</th>
+                        <th>Plan End Time</th>
+                        <th>Operate</th>
+                    </tr>
+                    <tbody id="phaseBody">
+                        <#if phase?? && phase?size gt 0>
+                            <#list phase as ph>
+                                <tr class="tab_c1">
+                                    <td style="color: rgba(102, 102, 102, 1);font-size: 30px">■</td>
+                                    <td>${ph.PHASE_NAME!}</td>
+                                    <td>${ph.PHASE_DESC!}</td>
+                                    <#if ph.PHASE_START_TIME??>
+                                        <td>${ph.PHASE_START_TIME!?string('yyyy-MM-dd')}</td>
+                                    <#else>
+                                        <td></td>
+                                    </#if>
+                                    <#if ph.PHASE_END_TIME??>
+                                        <td>${ph.PHASE_END_TIME!?string('yyyy-MM-dd')}</td>
+                                    <#else>
+                                        <td></td>
+                                    </#if>
+                                    <td><a id="${ph.PHASE_ID!}">Delete</a></td>
+                                </tr>
+                            </#list>
+                        <#else>
+                            <tr class="tab_c1">
+                                <td style="color: rgba(102, 102, 102, 1);font-size: 30px">■</td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true"></td>
+                                <td contenteditable="true" id="oneStartTime"></td>
+                                <td contenteditable="true" id="oneEndTime"></td>
+                                <td><a id="">Delete</a></td>
+                            </tr>
+                        </#if>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- right end -->
+    </div>
+    <!-- content -->
+</div>
+<script>
+    function delDocments(docId,obj){
+        let config = {
+            data:{"docId":docId},
+            url: ctxPath + "/academic/deleteDocument",
+            callBackFunc:function (){
+                ui.msg("Delete Success！")
+                $(obj).parents("span").remove();
+            },
+            callBackErrorFunc: function(){
+                ui.closeWin();
+                ui.msg("Delete Failed!");
+            }
+        };
+        ui.confirmDoAjax("Are you sure to delete this document?",config);
+    }
+    function delPhase(){
+        $("tbody .tab_c1").each(function(n,m){
+            $(m).find("td:last a").click(function (){
+                var id = $(this).attr("id");
+                if(id != ""){
+                    var config = {
+                        data:{"phaseId":id},
+                        url: ctxPath + "/academic/deletePhase",
+                        callBackFunc:function (){
+                            ui.msg("Delete Success！");
+                            window.location.reload();
+                        },
+                        callBackErrorFunc: function(){
+                            ui.closeWin();
+                            ui.msg("Delete Failed!");
+                        }
+                    };
+                    ui.confirmDoAjax("Are you sure to delete this phase?",config);
+                }else{
+                    if($("tr.tab_c1").length > 1){
+                        $(this).parent().parent().remove();
+                    }else{
+                        ui.msg("At least one project development phase data item must be retained!");
+                    }
+                }
+            })
+        })
+    }
+    $(document).ready(function (){
+        delPhase();
+        $(".add_phase_tr_btn").click(function (){
+            // 随机4位整数
+            const num = Math.floor(Math.random()*9000)+1000;
+            $("#phaseBody").append("<tr class='tab_c1'>\n" +
+                "                            <td style='color: rgba(102, 102, 102, 1);font-size: 30px'>■</td>\n" +
+                "                            <td contenteditable='true'></td>\n" +
+                "                            <td contenteditable='true'></td>\n" +
+                "                            <td contenteditable='true' id='startTime_"+num+"'</td>\n" +
+                "                            <td contenteditable='true' id='endTime_"+num+"'></td>\n" +
+                "                            <td><a id=''>Delete</a></td>\n" +
+                "                        </tr>");
+            layui.use('laydate', function(){
+                var laydate = layui.laydate;
+
+                //执行一个laydate实例
+                laydate.render({
+                    type: 'date',
+                    elem: '#startTime_'+num//指定元素
+                });
+
+                laydate.render({
+                    type: 'date',
+                    elem: '#endTime_'+num//指定元素
+                });
+            });
+            delPhase();
+        });
+
+        const acaId = "${acaId!}";
+        $("#createProject").click(function (){
+            academic.createProject(acaId);
+        });
+        $("#DetailBack").click(function (){
+            window.history.back();
+        })
+        layui.use('laydate', function(){
+            var laydate = layui.laydate;
+
+            //执行一个laydate实例
+            laydate.render({
+                type: 'date',
+                elem: '#ACA_START_TIME'//指定元素
+            });
+
+            laydate.render({
+                type: 'date',
+                elem: '#ACA_END_TIME'//指定元素
+            });
+
+            //执行一个laydate实例
+            laydate.render({
+                type: 'date',
+                elem: '#oneStartTime'//指定元素
+            });
+
+            laydate.render({
+                type: 'date',
+                elem: '#oneEndTime'//指定元素
+            });
+        });
+    });
+</script>
+</body>
+</html>
