@@ -30,9 +30,9 @@ datasource:
     dbname: datasource
 jdbc:
   type: mysql
-  url: jdbc:mysql://119.189.0.152:3306/academic?useUnicode=true&useSSL=true&characterEncoding=UTF-8&serverTimezone=GMT%2b8
+  url: jdbc:mysql://171.189.0.152:3306/academic?useUnicode=true&useSSL=true&characterEncoding=UTF-8&serverTimezone=GMT%2b8
   username: root
-  password: ldonglit1q!
+  password: bsdms2w@@!
   driver: com.mysql.cj.jdbc.Driver
 
 #部署环境配置
